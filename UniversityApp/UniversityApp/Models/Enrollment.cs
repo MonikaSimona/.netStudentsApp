@@ -10,14 +10,14 @@ namespace UniversityApp.Models
     public class Enrollment
     {
         [Required]
-        public BigInteger Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public int CourseId { get; set; }
         public Course Course { get; set; }
 
         [Required]
-        public BigInteger StudentId { get; set; }
+        public int StudentId { get; set; }
         public Student Student { get; set; }
 
         [StringLength(10, MinimumLength = 3)]

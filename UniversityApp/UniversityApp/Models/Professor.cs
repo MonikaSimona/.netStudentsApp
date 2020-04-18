@@ -10,7 +10,7 @@ namespace UniversityApp.Models
     public class Professor
     {
         [Required]
-        public BigInteger Id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(50, MinimumLength = 3)]
         [Required]
@@ -35,5 +35,7 @@ namespace UniversityApp.Models
             get { return String.Format("{0} {1}", FirstName, LastName); }
         }
         public ICollection<Course> Courses { get; set; }
+        //public ICollection<Course> FirstTeachersCourses { get; set; }
+        //public ICollection<Course> SecondTeachersCourses { get; set; }
     }
 }

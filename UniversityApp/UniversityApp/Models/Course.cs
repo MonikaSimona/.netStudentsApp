@@ -26,10 +26,14 @@ namespace UniversityApp.Models
 
         [StringLength(25, MinimumLength = 3)]
         public string EducationLevel { get; set; }
-        public int? FirstTeacherId { get; set; }
-        public Professor FirstTeacher { get; set; }
-        public int? SecondTeacherId { get; set; }
-        public Professor SecondTeacher { get; set; }
+
+        public int? FirstProfessorId { get; set; }
+        public int? SecondProfessorId { get; set; }
+        public Professor Professor { get; set; }
+       
+
+        //public ICollection<CourseProfessor> Professors { get; set; }
+
         public ICollection<Enrollment> Students { get; set; }
 
     }

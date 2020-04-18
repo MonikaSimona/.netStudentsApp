@@ -10,7 +10,7 @@ namespace UniversityApp.Models
     public class Student
     {
         [Required]
-        public BigInteger Id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(10, MinimumLength = 3)]
         [Required]
