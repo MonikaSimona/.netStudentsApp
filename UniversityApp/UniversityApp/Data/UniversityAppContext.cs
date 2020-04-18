@@ -21,6 +21,30 @@ namespace UniversityApp.Data
         public DbSet<UniversityApp.Models.Student> Student { get; set; }
         public DbSet<Enrollment> Enrollment { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Enrollment>()
+                .HasOne<Student>(p => p.Student)
+                .WithMany(p => p.Courses)
+                .HasForeignKey(p => p.Id);
+
+            builder.Entity<Enrollment>()
+                .HasOne<Course>(p => p.Course)
+                .WithMany(p => p.Students)
+                .HasForeignKey(p => p.Id);
+
+            builder.Entity<Course>()
+                .HasOne<Professor>(p => p.Professor)
+                .WithMany(p => p.Courses)
+                .HasForeignKey(p => p.FirstProfessorId);
+
+            builder.Entity<Course>()
+                .HasOne<Professor>(p => p.Professor)
+                .WithMany(p => p.Courses)
+                .HasForeignKey(p => p.SecondProfessorId);
+
+        }
+
 
 
 
