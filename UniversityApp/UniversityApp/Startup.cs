@@ -26,15 +26,9 @@ namespace UniversityApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
             services.AddDbContext<UniversityAppContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UniversityAppContext")));
 
-            services.AddDbContext<UniversityAppContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("UniversityAppContext")));
-
-            services.AddDbContext<UniversityAppContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("UniversityAppContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

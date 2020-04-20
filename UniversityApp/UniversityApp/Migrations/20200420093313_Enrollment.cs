@@ -2,7 +2,7 @@
 
 namespace UniversityApp.Migrations
 {
-    public partial class SeedData : Migration
+    public partial class Enrollment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

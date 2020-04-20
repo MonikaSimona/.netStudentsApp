@@ -28,10 +28,10 @@
                 @Html.DisplayNameFor(model => model.EducationLevel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstProfessorId)
+                @Html.DisplayNameFor(model => model.FirstProfessor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SecondProfessorId)
+                @Html.DisplayNameFor(model => model.SecondProfessor)
             </th>
             <th></th>
         </tr>
@@ -55,10 +55,17 @@
                 @Html.DisplayFor(modelItem => item.EducationLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstProfessorId)
+                @if (item.FirstProfessorId != null)
+                {
+                    <a asp-controller="Professors" asp-action="Details" asp-route-id="@item.FirstProfessorId"> @Html.DisplayFor(modelItem => item.FirstProfessor.FullName)</a>
+                }
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SecondProfessorId)
+                @if (item.SecondProfessorId != null)
+                {
+                    <a asp-controller="Professors" asp-action="Details" asp-route-id="@item.SecondProfessorId"> @Html.DisplayFor(modelItem => item.SecondProfessor.FullName)</a>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

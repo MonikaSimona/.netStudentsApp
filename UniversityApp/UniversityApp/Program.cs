@@ -34,6 +34,8 @@ namespace UniversityApp
                 }
             }
             host.Run();
+            //var host = CreateWebHostBuilder(args).Build();
+            //host.Run();
 
         }
 

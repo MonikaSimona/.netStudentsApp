@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UniversityApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class StudentCourseProfessorEnrollment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +45,7 @@ namespace UniversityApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -56,15 +56,20 @@ namespace UniversityApp.Migrations
                     Programme = table.Column<string>(maxLength: 100, nullable: true),
                     EducationLevel = table.Column<string>(maxLength: 25, nullable: true),
                     FirstProfessorId = table.Column<int>(nullable: true),
-                    SecondProfessorId = table.Column<int>(nullable: true),
-                    ProfessorId = table.Column<int>(nullable: true)
+                    SecondProfessorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.Id);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Course_Professor_ProfessorId",
-                        column: x => x.ProfessorId,
+                        name: "FK_Courses_Professor_FirstProfessorId",
+                        column: x => x.FirstProfessorId,
+                        principalTable: "Professor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Courses_Professor_SecondProfessorId",
+                        column: x => x.SecondProfessorId,
                         principalTable: "Professor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -93,23 +98,28 @@ namespace UniversityApp.Migrations
                 {
                     table.PrimaryKey("PK_Enrollment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Enrollment_Course_CourseId",
+                        name: "FK_Enrollment_Student_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Course",
+                        principalTable: "Student",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Enrollment_Student_StudentId",
+                        name: "FK_Enrollment_Courses_StudentId",
                         column: x => x.StudentId,
-                        principalTable: "Student",
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Course_ProfessorId",
-                table: "Course",
-                column: "ProfessorId");
+                name: "IX_Courses_FirstProfessorId",
+                table: "Courses",
+                column: "FirstProfessorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_SecondProfessorId",
+                table: "Courses",
+                column: "SecondProfessorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Enrollment_CourseId",
@@ -128,10 +138,10 @@ namespace UniversityApp.Migrations
                 name: "Enrollment");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Student");
 
             migrationBuilder.DropTable(
-                name: "Student");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Professor");

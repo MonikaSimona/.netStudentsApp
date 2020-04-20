@@ -53,15 +53,19 @@ namespace UniversityApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FirstProfessorId");
+
                     b.HasIndex("SecondProfessorId");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("UniversityApp.Models.Enrollment", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AdditionalPoint")
                         .HasColumnType("int");
@@ -103,6 +107,10 @@ namespace UniversityApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Enrollment");
                 });
@@ -186,22 +194,26 @@ namespace UniversityApp.Migrations
 
             modelBuilder.Entity("UniversityApp.Models.Course", b =>
                 {
-                    b.HasOne("UniversityApp.Models.Professor", "Professor")
-                        .WithMany("Courses")
+                    b.HasOne("UniversityApp.Models.Professor", "FirstProfessor")
+                        .WithMany("FirstProfCourses")
+                        .HasForeignKey("FirstProfessorId");
+
+                    b.HasOne("UniversityApp.Models.Professor", "SecondProfessor")
+                        .WithMany("SecondProfCourses")
                         .HasForeignKey("SecondProfessorId");
                 });
 
             modelBuilder.Entity("UniversityApp.Models.Enrollment", b =>
                 {
-                    b.HasOne("UniversityApp.Models.Course", "Course")
-                        .WithMany("Students")
-                        .HasForeignKey("Id")
+                    b.HasOne("UniversityApp.Models.Student", "Student")
+                        .WithMany("Courses")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UniversityApp.Models.Student", "Student")
-                        .WithMany("Courses")
-                        .HasForeignKey("Id")
+                    b.HasOne("UniversityApp.Models.Course", "Course")
+                        .WithMany("Students")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

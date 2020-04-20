@@ -29,8 +29,9 @@ namespace UniversityApp.Models
 
         public int? FirstProfessorId { get; set; }
         public int? SecondProfessorId { get; set; }
-        public Professor Professor { get; set; }
-       
+        public Professor FirstProfessor { get; set; }
+        public Professor SecondProfessor { get; set; }
+
 
         //public ICollection<CourseProfessor> Professors { get; set; }
 
