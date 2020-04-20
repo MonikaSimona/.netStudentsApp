@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Data;
 using UniversityApp.Models;
+using UniversityApp.ViewModels;
 
 namespace UniversityApp.Controllers
 {
@@ -20,9 +21,45 @@ namespace UniversityApp.Controllers
         }
 
         // GET: Professors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string profFirstName,  string profLastName, string profDegree, string profAcRank)
         {
-            return View(await _context.Professor.ToListAsync());
+            IQueryable<Professor> professors = _context.Professor.AsQueryable();
+
+            IQueryable<string> profDegreeQuery = _context.Professor
+                .OrderBy(m => m.Degree).Select(m => m.Degree).Distinct();
+
+            IQueryable<string> profAcRankQuery = _context.Professor
+                .OrderBy(m => m.AcademicRank).Select(m => m.AcademicRank).Distinct();
+           
+            if (!string.IsNullOrEmpty(profFirstName))
+            {
+                professors = professors.Where(s => s.FirstName.Contains(profFirstName));
+            }
+            if (!string.IsNullOrEmpty(profLastName))
+            {
+                professors = professors.Where(s => s.LastName.Contains(profLastName));
+            }
+
+            if (!string.IsNullOrEmpty(profDegree))
+            {
+                professors = professors.Where(x => x.Degree == profDegree);
+            }
+            if (!string.IsNullOrEmpty(profAcRank))
+            {
+                professors = professors.Where(x => x.AcademicRank == profAcRank);
+            }
+
+            //professors = professors.Include(m => m.FirstProfCourses)
+            //.Include(m => m.)
+            var profFilterViewModel = new ProfessorFilterViewModel
+            {
+                Degrees = new SelectList(await profDegreeQuery.ToListAsync()),
+                AcademicRanks = new SelectList(await profAcRankQuery.ToListAsync()),
+                Professors = await professors.ToListAsync()
+            };
+            return View(profFilterViewModel);
+
+            //return View(await _context.Professor.ToListAsync());
         }
 
         // GET: Professors/Details/5

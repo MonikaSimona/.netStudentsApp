@@ -1,10 +1,29 @@
-﻿@model IEnumerable<UniversityApp.Models.Course>
+﻿@*@model IEnumerable<UniversityApp.Models.Course>*@
+@model UniversityApp.ViewModels.CourseFilterViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Courses</h1>
+
+<form asp-controller="Courses" asp-action="Index" method="get">
+    <p> Title:
+        <select asp-for="CourseTitle" asp-items="Model.Titles">
+            <option value="">All</option>
+        </select>
+        Semester:
+        <select asp-for="CourseSemester" asp-items="Model.Semesters">
+            <option value="">All</option>
+        </select>
+        Programme:
+        <select asp-for="CourseProgramme" asp-items="Model.Programmes">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,31 +32,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Courses[0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Credits)
+                @Html.DisplayNameFor(model => model.Courses[0].Credits)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Semester)
+                @Html.DisplayNameFor(model => model.Courses[0].Semester)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Programme)
+                @Html.DisplayNameFor(model => model.Courses[0].Programme)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EducationLevel)
+                @Html.DisplayNameFor(model => model.Courses[0].EducationLevel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstProfessor)
+                @Html.DisplayNameFor(model => model.Courses[0].FirstProfessor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SecondProfessor)
+                @Html.DisplayNameFor(model => model.Courses[0].SecondProfessor)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Courses) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)

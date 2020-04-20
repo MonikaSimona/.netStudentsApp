@@ -41,6 +41,8 @@ namespace UniversityApp.Data
                 .HasOne<Professor>(p => p.SecondProfessor)
                 .WithMany(p => p.SecondProfCourses)
                 .HasForeignKey(p => p.SecondProfessorId);
+          
+
         }
 
     }

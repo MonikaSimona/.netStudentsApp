@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Data;
 using UniversityApp.Models;
+using UniversityApp.ViewModels;
 
 namespace UniversityApp.Controllers
 {
@@ -20,10 +21,47 @@ namespace UniversityApp.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string courseTitle, int courseSemester, string courseProgramme)
         {
-            var universityAppContext = _context.Courses.Include(c => c.FirstProfessor).Include(c => c.SecondProfessor);
-            return View(await universityAppContext.ToListAsync());
+            IQueryable<Course> courses = _context.Courses.AsQueryable();
+            IQueryable<string> titleQuery = _context.Courses
+                .OrderBy(m => m.Title).Select(m => m.Title).Distinct();
+
+            IQueryable<int> semesterQuery = _context.Courses
+                .OrderBy(m => m.Semester).Select(m => m.Semester).Distinct();
+
+            IQueryable<string> programmeQuery = _context.Courses
+                .OrderBy(m => m.Programme).Select(m => m.Programme).Distinct();
+
+            if (!string.IsNullOrEmpty(courseTitle))
+            {
+                courses = courses.Where(x => x.Title == courseTitle);
+            }
+            if (courseSemester != 0)
+            {
+                courses = courses.Where(x => x.Semester == courseSemester);
+            }
+            if (!string.IsNullOrEmpty(courseProgramme))
+            {
+                courses = courses.Where(x => x.Programme == courseProgramme);
+            }
+
+            //courses = courses.Include(m => m.FirstProfessor);
+            //courses = courses.Include(m => m.SecondProfessor);
+
+            var courseFilterVM = new CourseFilterViewModel
+            {
+                Titles = new SelectList(await titleQuery.ToListAsync()),
+                Semesters = new SelectList(await semesterQuery.ToListAsync()),
+                Programmes = new SelectList(await programmeQuery.ToListAsync()),
+                Courses = await courses.ToListAsync()
+
+            };
+            return View(courseFilterVM);
+
+
+            //var universityAppContext = _context.Courses.Include(c => c.FirstProfessor).Include(c => c.SecondProfessor);
+            //return View(await universityAppContext.ToListAsync());
         }
 
         // GET: Courses/Details/5

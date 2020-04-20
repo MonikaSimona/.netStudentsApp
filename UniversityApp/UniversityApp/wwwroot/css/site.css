@@ -60,6 +60,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
+  background-color :honeydew;
   margin-bottom: 60px;
 }
 .footer {

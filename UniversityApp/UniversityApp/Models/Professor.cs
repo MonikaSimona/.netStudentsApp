@@ -28,6 +28,7 @@ namespace UniversityApp.Models
 
         [StringLength(10, MinimumLength = 3)]
         public string OfficeNumber { get; set; }
+        
 
         public DateTime HireDate { get; set; }
         public string FullName
