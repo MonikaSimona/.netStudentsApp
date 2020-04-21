@@ -49,37 +49,69 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Professors[0].HireDate)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Professors[0].FirstProfCourses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Professors[0].SecondProfCourses)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Professors)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Degree)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AcademicRank)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OfficeNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HireDate)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Degree)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AcademicRank)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OfficeNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HireDate)
+                </td>
+                <td>
+                    @if (item.FirstProfCourses != null)
+                    {
+                        @foreach (var course in item.FirstProfCourses)
+                        {
+                            @if (course.Id != 0)
+                            {
+                                <a asp-controller="FirstProfCourses" asp-action="Details" asp-route-id="@course.Id"> @course.Title</a> <br />
+                            }
+                        }
+                    }
+
+                </td>
+                <td>
+                    @if (item.SecondProfCourses != null)
+                    {
+                        @foreach (var course in item.SecondProfCourses)
+                        {
+                            @if (course.Id != 0)
+                            {
+                                <a asp-controller="SecondProfCurses" asp-action="Details" asp-route-id="@course.Id"> @course.Title </a> <br />
+                            }
+                        }
+                    }
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

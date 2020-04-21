@@ -14,10 +14,12 @@ namespace UniversityApp.Models
 
         [StringLength(50, MinimumLength = 3)]
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [StringLength(50, MinimumLength = 3)]
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [StringLength(50, MinimumLength = 3)]
@@ -31,6 +33,7 @@ namespace UniversityApp.Models
         
 
         public DateTime HireDate { get; set; }
+        [Display(Name = "Professors Full Name")]
         public string FullName
         {
             get { return String.Format("{0} {1}", FirstName, LastName); }

@@ -29,7 +29,9 @@ namespace UniversityApp.Models
 
         public int? FirstProfessorId { get; set; }
         public int? SecondProfessorId { get; set; }
+        [Display(Name = "First Professor")]
         public Professor FirstProfessor { get; set; }
+        [Display(Name = "Second Professor")]
         public Professor SecondProfessor { get; set; }
 
 

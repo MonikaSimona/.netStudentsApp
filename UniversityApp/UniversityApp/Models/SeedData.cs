@@ -57,8 +57,8 @@ namespace UniversityApp.Models
                 context.SaveChanges();
 
                 context.Enrollment.AddRange(
-                    new Enrollment { CourseId = 1, StudentId = 1, ExamPoints = 56, AdditionalPoint = 15, ProjectPoints = 23, SeminarPoints = 15, Year = 2020, Grade = 7, FinishDate = DateTime.Parse("2020 - 5 - 26") },
-                    new Enrollment { CourseId = 1, StudentId = 2, ExamPoints = 70, AdditionalPoint = 15, ProjectPoints = 25, SeminarPoints = 15, Year = 2020, Grade = 8, FinishDate = DateTime.Parse("2020 - 5 - 26") }
+                    new Enrollment { CourseId = 1, StudentId = 1,   ExamPoints = 56, AdditionalPoint = 15, ProjectPoints = 23, SeminarPoints = 15, Year = 2020, Grade = 7, FinishDate = DateTime.Parse("2020 - 5 - 26") },
+                    new Enrollment { CourseId = 1, StudentId = 2,   ExamPoints = 70, AdditionalPoint = 15, ProjectPoints = 25, SeminarPoints = 15, Year = 2020, Grade = 8, FinishDate = DateTime.Parse("2020 - 5 - 26") }
                     );
                 context.SaveChanges();
 
