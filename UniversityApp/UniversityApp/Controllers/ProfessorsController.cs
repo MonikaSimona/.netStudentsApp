@@ -21,7 +21,7 @@ namespace UniversityApp.Controllers
         }
 
         // GET: Professors
-        public async Task<IActionResult> Index(string profFirstName,  string profLastName, string profDegree, string profAcRank)
+        public async Task<IActionResult> Index(string profName, string profDegree, string profAcRank)
         {
             IQueryable<Professor> professors = _context.Professor.AsQueryable();
 
@@ -31,15 +31,11 @@ namespace UniversityApp.Controllers
             IQueryable<string> profAcRankQuery = _context.Professor
                 .OrderBy(m => m.AcademicRank).Select(m => m.AcademicRank).Distinct();
            
-            if (!string.IsNullOrEmpty(profFirstName))
+            if (!string.IsNullOrEmpty(profName))
             {
-                professors = professors.Where(s => s.FirstName.Contains(profFirstName));
+                professors = professors.Where(s => s.FirstName.Contains(profName) || s.LastName.Contains(profName));
             }
-            if (!string.IsNullOrEmpty(profLastName))
-            {
-                professors = professors.Where(s => s.LastName.Contains(profLastName));
-            }
-
+           
             if (!string.IsNullOrEmpty(profDegree))
             {
                 professors = professors.Where(x => x.Degree == profDegree);
@@ -49,7 +45,8 @@ namespace UniversityApp.Controllers
                 professors = professors.Where(x => x.AcademicRank == profAcRank);
             }
 
-            professors = professors.Include(m => m.FirstProfCourses).Include(m => m.SecondProfCourses);
+            professors = professors.Include(m => m.FirstProfCourses);
+            professors = professors.Include(m => m.SecondProfCourses);
 
             var profFilterViewModel = new ProfessorFilterViewModel
             {
@@ -57,6 +54,7 @@ namespace UniversityApp.Controllers
                 AcademicRanks = new SelectList(await profAcRankQuery.ToListAsync()),
                 Professors = await professors.ToListAsync()
             };
+
             return View(profFilterViewModel);
 
             //return View(await _context.Professor.ToListAsync());

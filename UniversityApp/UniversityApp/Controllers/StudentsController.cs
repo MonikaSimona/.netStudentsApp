@@ -20,9 +20,31 @@ namespace UniversityApp.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchFirstName, string searchLastName, string index)
+
         {
-            return View(await _context.Student.ToListAsync());
+            ViewData["CurrentFilter"] = searchFirstName;
+            ViewData["CurrentFilter2"] = searchLastName;
+            ViewData["CurrentFilter3"] = index;
+
+            var students = from s in _context.Student
+                           select s;
+
+            //IQueryable<Student> students = _context.Student.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchFirstName))
+            {
+                students = students.Where(s => s.FirstName.Contains(searchFirstName));
+            }
+            if (!String.IsNullOrEmpty(searchLastName))
+            {
+                students = students.Where(s => s.LastName.Contains(searchLastName));
+            }
+            if (!String.IsNullOrEmpty(index))
+            {
+                students = students.Where(s => s.StudentId.Contains(index));
+            }
+            return View(await students.AsNoTracking().ToListAsync());
         }
 
         // GET: Students/Details/5

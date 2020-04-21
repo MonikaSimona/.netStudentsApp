@@ -9,8 +9,8 @@
 
 <form asp-controller="Professors" asp-action="Index" method="get">
     <p>
-        First Name: <input type="text" asp-for="FirstNameSearch" />
-        Last Name: <input type="text" asp-for="LastNameSearch" />
+        Professor Name: <input type="text" asp-for="NameSearch" />
+        
         <br />
         Professors Degree:
         <select asp-for="ProfessorDegree" asp-items="Model.Degrees">
@@ -87,7 +87,7 @@
                         {
                             @if (course.Id != 0)
                             {
-                                <a asp-controller="FirstProfCourses" asp-action="Details" asp-route-id="@course.Id"> @course.Title</a> <br />
+                                <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title</a> <br />
                             }
                         }
                     }
@@ -100,7 +100,7 @@
                         {
                             @if (course.Id != 0)
                             {
-                                <a asp-controller="SecondProfCurses" asp-action="Details" asp-route-id="@course.Id"> @course.Title </a> <br />
+                                <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title </a> <br />
                             }
                         }
                     }

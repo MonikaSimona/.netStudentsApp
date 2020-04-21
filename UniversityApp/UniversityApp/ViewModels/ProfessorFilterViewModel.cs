@@ -10,8 +10,8 @@ namespace UniversityApp.ViewModels
     public class ProfessorFilterViewModel
     {
         public IList<Professor> Professors { get; set; }
-        public string FirstNameSearch { get; set; }
-        public string LastNameSearch { get; set; }
+        public string NameSearch { get; set; }
+       
         public SelectList Degrees { get; set; }
         public string ProfessorDegree { get; set; }
         public SelectList AcademicRanks { get; set; }

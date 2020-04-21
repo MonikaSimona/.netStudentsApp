@@ -49,8 +49,8 @@ namespace UniversityApp.Controllers
                 courses = courses.Where(x => x.Programme == courseProgramme);
             }
 
-            courses = courses.Include(m => m.FirstProfessor);
-            courses = courses.Include(m => m.SecondProfessor);
+            courses = courses.Include(m => m.FirstProfessor).ThenInclude(m => m.FirstProfCourses);
+            courses = courses.Include(m => m.SecondProfessor).ThenInclude(m => m.SecondProfCourses);
             courses = courses.Include(m => m.Students).ThenInclude(m => m.Student);
 
             var courseFilterVM = new CourseFilterViewModel
