@@ -34,7 +34,11 @@ namespace UniversityApp.Controllers
             }
 
             var student = await _context.Student
+                .Include(s => s.Courses)
+                .ThenInclude(e => e.Course)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (student == null)
             {
                 return NotFound();

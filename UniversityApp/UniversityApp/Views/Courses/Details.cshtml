@@ -10,37 +10,37 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Credits)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Credits)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Semester)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Semester)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Programme)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Programme)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EducationLevel)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EducationLevel)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstProfessor)
         </dt>
         <dd class="col-sm-10">
@@ -49,7 +49,7 @@
                 <a asp-controller="Professors" asp-action="Details" asp-route-id="@Model.FirstProfessorId">@Html.DisplayFor(model => model.FirstProfessor.FullName)</a>
             }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SecondProfessor)
         </dt>
         <dd class="col-sm-10">
@@ -57,6 +57,36 @@
             {
                 <a asp-controller="Professors" asp-action="Details" asp-route-id="@Model.SecondProfessorId">@Html.DisplayFor(model => model.SecondProfessor.FullName)</a>
             }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Students)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+
+                    <th>Student Id</th>
+                    <th>Student Name</th>
+
+                </tr>
+                @if (Model.Students != null)
+                {
+                    @foreach (var item in Model.Students)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Student.StudentId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Student.FullName)
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+            </table>
         </dd>
     </dl>
 </div>

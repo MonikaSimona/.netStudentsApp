@@ -23,6 +23,9 @@ namespace UniversityApp.Controllers
         // GET: Courses
         public async Task<IActionResult> Index(string courseTitle, int courseSemester, string courseProgramme)
         {
+            
+              
+
             IQueryable<Course> courses = _context.Courses.AsQueryable();
             IQueryable<string> titleQuery = _context.Courses
                 .OrderBy(m => m.Title).Select(m => m.Title).Distinct();
@@ -46,8 +49,9 @@ namespace UniversityApp.Controllers
                 courses = courses.Where(x => x.Programme == courseProgramme);
             }
 
-            //courses = courses.Include(m => m.FirstProfessor);
-            //courses = courses.Include(m => m.SecondProfessor);
+            courses = courses.Include(m => m.FirstProfessor);
+            courses = courses.Include(m => m.SecondProfessor);
+            courses = courses.Include(m => m.Students).ThenInclude(m => m.Student);
 
             var courseFilterVM = new CourseFilterViewModel
             {

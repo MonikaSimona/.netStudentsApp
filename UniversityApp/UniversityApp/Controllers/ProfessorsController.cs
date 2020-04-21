@@ -49,8 +49,8 @@ namespace UniversityApp.Controllers
                 professors = professors.Where(x => x.AcademicRank == profAcRank);
             }
 
-            //professors = professors.Include(m => m.FirstProfCourses)
-            //.Include(m => m.)
+            professors = professors.Include(m => m.FirstProfCourses).Include(m => m.SecondProfCourses);
+
             var profFilterViewModel = new ProfessorFilterViewModel
             {
                 Degrees = new SelectList(await profDegreeQuery.ToListAsync()),
