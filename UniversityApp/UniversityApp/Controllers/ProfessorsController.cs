@@ -25,34 +25,36 @@ namespace UniversityApp.Controllers
         {
             IQueryable<Professor> professors = _context.Professor.AsQueryable();
 
-            IQueryable<string> profDegreeQuery = _context.Professor
+            IQueryable<String> profDegreeQuery = _context.Professor
                 .OrderBy(m => m.Degree).Select(m => m.Degree).Distinct();
 
-            IQueryable<string> profAcRankQuery = _context.Professor
+            IQueryable<String> profAcRankQuery = _context.Professor
                 .OrderBy(m => m.AcademicRank).Select(m => m.AcademicRank).Distinct();
            
-            if (!string.IsNullOrEmpty(profName))
+            if (!String.IsNullOrEmpty(profName))
             {
                 professors = professors.Where(s => s.FirstName.Contains(profName) || s.LastName.Contains(profName));
             }
            
-            if (!string.IsNullOrEmpty(profDegree))
+            if (!String.IsNullOrEmpty(profDegree))
             {
                 professors = professors.Where(x => x.Degree == profDegree);
             }
-            if (!string.IsNullOrEmpty(profAcRank))
+            if (!String.IsNullOrEmpty(profAcRank))
             {
                 professors = professors.Where(x => x.AcademicRank == profAcRank);
             }
 
-            professors = professors.Include(m => m.FirstProfCourses);
-            professors = professors.Include(m => m.SecondProfCourses);
+            professors = professors.Include(m => m.FirstProfCourses)
+                                    .Include(m => m.SecondProfCourses);
+            
 
             var profFilterViewModel = new ProfessorFilterViewModel
             {
+                Professors = await professors.ToListAsync(),
                 Degrees = new SelectList(await profDegreeQuery.ToListAsync()),
-                AcademicRanks = new SelectList(await profAcRankQuery.ToListAsync()),
-                Professors = await professors.ToListAsync()
+                AcademicRanks = new SelectList(await profAcRankQuery.ToListAsync())
+                
             };
 
             return View(profFilterViewModel);
@@ -69,6 +71,8 @@ namespace UniversityApp.Controllers
             }
 
             var professor = await _context.Professor
+                .Include(p => p.FirstProfCourses)
+                .Include(p => p.SecondProfCourses)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (professor == null)
             {
@@ -160,6 +164,8 @@ namespace UniversityApp.Controllers
             }
 
             var professor = await _context.Professor
+                .Include(p => p.FirstProfCourses)
+                .Include(p => p.SecondProfCourses)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (professor == null)
             {

@@ -67,7 +67,9 @@
                     <tr>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.Course.Title)
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@item.CourseId">
+                                @item.Course.Title
+                            </a> <br />
                         </td>
                       
                     </tr>

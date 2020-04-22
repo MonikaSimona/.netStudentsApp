@@ -76,10 +76,10 @@
                         <tr>
 
                             <td>
-                                @Html.DisplayFor(modelItem => item.Student.StudentId)
+                                <a asp-controller="Students" asp-action="Details" asp-route-id="@item.StudentId"> @item.Student.StudentId </a>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Student.FirstName)
+                                <a asp-controller="Students" asp-action="Details" asp-route-id="@item.StudentId"> @item.Student.FullName </a>
                             </td>
 
                         </tr>

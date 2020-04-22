@@ -47,83 +47,35 @@
             @Html.DisplayFor(model => model.HireDate)
         </dd>
 
-        <dd class="col-sm-10">
-            <table class="table">
-                <tr>
-
-                    <th>Course Title</th>
-
-                </tr>
-                @if (Model.FirstProfCourses != null)
-                {
-                    @foreach (var item in Model.FirstProfCourses)
-                    {
-                        <tr>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FirstProfessor.FirstProfCourses)
-                            </td>
-
-                        </tr>
-                    }
-                }
-
-            </table>
-        </dd>
-        <dd class="col-sm-10">
-            <table class="table">
-                <tr>
-
-                    <th>Course Title</th>
-
-                </tr>
-                @if (Model.SecondProfCourses != null)
-                {
-                    @foreach (var item in Model.SecondProfCourses)
-                    {
-                        <tr>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SecondProfessor.SecondProfCourses)
-                            </td>
-
-                        </tr>
-                    }
-                }
-
-            </table>
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.FirstProfCourses)
+        <dt class="col-sm-2">
+            Courses
+            @*@Html.DisplayNameFor(model => model.FirstProfCourses)*@
         </dt>
-        <dd>
+        <dd class="col-sm-10">
             @if (Model.FirstProfCourses != null)
             {
                 @foreach (var course in Model.FirstProfCourses)
                 {
                     <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">
-                        @course.Title
-                    </a> <br />
+                        @Html.DisplayFor(modelItem => course.Title)
+                    </a>
+                    <br />
                 }
             }
 
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SecondProfCourses)
-        </dt>
-        <dd>
             @if (Model.SecondProfCourses != null)
             {
                 @foreach (var course in Model.SecondProfCourses)
                 {
                     <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">
-                        @course.Title
-                    </a> <br />
+                        @Html.DisplayFor(modelItem => course.Title)
+                    </a>
+                    <br />
                 }
             }
 
-        </dd>*@
+        </dd>
+
     </dl>
 </div>
 <div>

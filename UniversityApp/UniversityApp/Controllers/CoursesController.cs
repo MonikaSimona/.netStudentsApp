@@ -79,7 +79,9 @@ namespace UniversityApp.Controllers
             var course = await _context.Courses
                 .Include(c => c.FirstProfessor)
                 .Include(c => c.SecondProfessor)
+                .Include(c => c.Students).ThenInclude(c => c.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (course == null)
             {
                 return NotFound();
@@ -128,8 +130,11 @@ namespace UniversityApp.Controllers
             {
                 return NotFound();
             }
+
+
             ViewData["FirstProfessorId"] = new SelectList(_context.Professor, "Id", "FullName", course.FirstProfessorId);
             ViewData["SecondProfessorId"] = new SelectList(_context.Professor, "Id", "FullName", course.SecondProfessorId);
+            
             return View(course);
         }
 
@@ -181,6 +186,7 @@ namespace UniversityApp.Controllers
             var course = await _context.Courses
                 .Include(c => c.FirstProfessor)
                 .Include(c => c.SecondProfessor)
+                .Include(c => c.Students).ThenInclude(c => c.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (course == null)
             {
