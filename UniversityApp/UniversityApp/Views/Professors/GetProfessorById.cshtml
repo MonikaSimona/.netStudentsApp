@@ -1,0 +1,57 @@
+﻿@model UniversityApp.Models.Professor
+@{
+    ViewData["Title"] = "GetProfessorById";
+}
+
+    <h2>Professor  @Html.DisplayFor(modelItem => modelItem.FullName)</h2>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Courses
+                @*@Html.DisplayNameFor(model => model.Professors[0].FirstProfCourses)*@
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+
+
+        <tr>
+            <td>
+                @if (Model.FirstProfCourses != null)
+                {
+                    @foreach (var course in Model.FirstProfCourses)
+                    {
+                        @if (course.Id != 0)
+                        {
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title</a>
+                            <br />
+                        }
+                    }
+                }
+
+
+                @if (Model.SecondProfCourses != null)
+                {
+                    @foreach (var course in Model.SecondProfCourses)
+                    {
+                        @if (course.Id != 0)
+                        {
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title </a>
+                            <br />
+                        }
+                    }
+                }
+            </td>
+        </tr>
+
+
+
+    </tbody>
+
+</table>
+
+

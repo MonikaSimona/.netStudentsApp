@@ -23,6 +23,9 @@ namespace UniversityApp.Models
         [StringLength(50, MinimumLength = 3)]
         [Required]
         public string LastName { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EnrollmentDate { get; set; }
         public int AcquiredCredits { get; set; }
         public int CurrentSemester { get; set; }

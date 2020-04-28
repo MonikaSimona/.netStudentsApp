@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using UniversityApp.Data;
 using UniversityApp.Models;
 using UniversityApp.ViewModels;
@@ -189,6 +190,26 @@ namespace UniversityApp.Controllers
         private bool ProfessorExists(int id)
         {
             return _context.Professor.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> GetProfessorById(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var professor = await _context.Professor
+               .Include(p => p.FirstProfCourses)
+               .Include(p => p.SecondProfCourses)
+               .FirstOrDefaultAsync(m => m.Id == id);
+
+            //var professorCoursesView = new ProfessorCoursesView
+            //{
+                
+
+            //};
+            return View(professor);
         }
     }
 }
