@@ -192,24 +192,48 @@ namespace UniversityApp.Controllers
             return _context.Professor.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> GetProfessorById(int? id)
+        public async Task<IActionResult> GetProfessorById(int? id, int? courseId)
         {
-            if (id == null)
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var professor = await _context.Professor
+            //   .Include(p => p.FirstProfCourses)
+            //   .Include(p => p.SecondProfCourses)
+            //   .FirstOrDefaultAsync(m => m.Id == id);
+
+            var viewModel = new ProfessorCoursesView();
+            viewModel.Professors = await _context.Professor
+                .Include(p => p.FirstProfCourses)
+                    .ThenInclude(p => p.Students)
+                        .ThenInclude(p => p.Student)
+                .Include(p => p.SecondProfCourses)
+                    .ThenInclude(p => p.Students)
+                        .ThenInclude(p => p.Student)
+                .AsNoTracking()
+                .ToListAsync();
+
+            if (id != null)
             {
-                return NotFound();
+                ViewData["InstructorID"] = id.Value;
+                Professor professor = viewModel.Professors.Where(
+                    i => i.Id == id.Value).Single();
+                viewModel.FirstProfCourses = professor.FirstProfCourses;
+                viewModel.SecondProfCourses = professor.SecondProfCourses;
+
             }
 
-            var professor = await _context.Professor
-               .Include(p => p.FirstProfCourses)
-               .Include(p => p.SecondProfCourses)
-               .FirstOrDefaultAsync(m => m.Id == id);
-
-            //var professorCoursesView = new ProfessorCoursesView
-            //{
-                
-
-            //};
-            return View(professor);
+            if (courseId != null)
+            {
+                ViewData["CourseID"] = courseId.Value;
+                viewModel.Enrollments = viewModel.FirstProfCourses.Where(
+                    x => x.Id == courseId).Single().Students;
+                viewModel.Enrollments = viewModel.SecondProfCourses.Where(
+                   x => x.Id == courseId).Single().Students;
+            }
+            return View(viewModel);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿@model UniversityApp.Models.Professor
+﻿@model UniversityApp.ViewModels.ProfessorCoursesView
 @{
     ViewData["Title"] = "GetProfessorById";
 }
 
-    <h2>Professor  @Html.DisplayFor(modelItem => modelItem.FullName)</h2>
+    <h2>Professor  @Html.DisplayFor(modelItem => modelItem.Professors[0].FullName)</h2>
 
 
 <table>
@@ -11,7 +11,11 @@
         <tr>
             <th>
                 Courses
-                @*@Html.DisplayNameFor(model => model.Professors[0].FirstProfCourses)*@
+               
+            </th>
+            <th>
+                Students
+               
             </th>
         </tr>
 
@@ -46,6 +50,18 @@
                     }
                 }
             </td>
+        </tr>
+        <tr>
+            <td>
+                @if(Model.Students != null)
+                {
+                    @foreach(var student in Model.Enrollments)
+                    {
+                        @student.Student.FullName
+                    }
+                }
+            </td>
+
         </tr>
 
 

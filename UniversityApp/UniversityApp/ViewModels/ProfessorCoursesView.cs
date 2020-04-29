@@ -9,8 +9,9 @@ namespace UniversityApp.ViewModels
     public class ProfessorCoursesView
     {
         public IList<Professor> Professors { get; set; }
-        public IList<Course> FirstProfCourses { get; set; }
-        public IList<Course> SecondProfCourses { get; set; }
-        public IList<Student> Students { get; set; }
+        public IEnumerable<Course> FirstProfCourses { get; set; }
+        public IEnumerable<Course> SecondProfCourses { get; set; }
+        public IEnumerable<Student> Students { get; set; }
+        public IEnumerable<Enrollment> Enrollments { get; set; }
     }
 }
