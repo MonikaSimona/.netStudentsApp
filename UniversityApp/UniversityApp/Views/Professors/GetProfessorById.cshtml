@@ -1,12 +1,13 @@
-﻿@model UniversityApp.ViewModels.ProfessorCoursesView
+﻿@*@model UniversityApp.ViewModels.ProfessorCoursesView*@
+@model UniversityApp.Models.Professor
 @{
     ViewData["Title"] = "GetProfessorById";
 }
 
-    <h2>Professor  @Html.DisplayFor(modelItem => modelItem.Professors[0].FullName)</h2>
+    <h2>Professor  @Html.DisplayFor(modelItem => modelItem.FullName)</h2>
 
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -23,46 +24,70 @@
     <tbody>
 
 
-        <tr>
-            <td>
-                @if (Model.FirstProfCourses != null)
-                {
-                    @foreach (var course in Model.FirstProfCourses)
-                    {
+        @if (Model.FirstProfCourses != null)
+        {
+            @foreach (var course in Model.FirstProfCourses)
+
+            {
+                <tr>
+                    <td>
                         @if (course.Id != 0)
                         {
-                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title</a>
+
+                            string professor = @Html.DisplayFor(modelItem => modelItem.FirstName).ToString();
+
+                            @Html.ActionLink(professor, "GetProfessorById", new { courseId = course.Id });
+
+                            @course.Id
+
+                            <a asp-controller="Courses" asp-action="GetStudentsByProfessorsCourse" asp-route-id="@course.Id"> @course.Title</a>
                             <br />
                         }
-                    }
-                }
 
+                    </td>
+                    <td>
+                       @foreach(var student in course.Students)
+                       {
+                           @student.Student.FullName
+                           <br />
+                       }
+                    </td>
+                </tr>
+            }
 
-                @if (Model.SecondProfCourses != null)
-                {
-                    @foreach (var course in Model.SecondProfCourses)
-                    {
+        }
+
+        @if (Model.SecondProfCourses != null)
+        {
+            @foreach (var course in Model.SecondProfCourses)
+
+            {
+                <tr>
+                    <td>
                         @if (course.Id != 0)
                         {
-                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id"> @course.Title </a>
+
+                            string professor = @Html.DisplayFor(modelItem => modelItem.FirstName).ToString();
+
+                            @Html.ActionLink(professor, "GetProfessorById", new { courseId = course.Id });
+
+                            @course.Id
+
+                            <a asp-controller="Courses" asp-action="GetStudentsByProfessorsCourse" asp-route-id="@course.Id"> @course.Title</a>
                             <br />
                         }
-                    }
-                }
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @if(Model.Students != null)
-                {
-                    @foreach(var student in Model.Enrollments)
-                    {
-                        @student.Student.FullName
-                    }
-                }
-            </td>
 
-        </tr>
+                    </td>
+                    <td>
+                        @foreach (var student in course.Students)
+                        {
+                            @student.Student.FullName
+                            <br />
+                        }
+                    </td>
+                </tr>
+            }
+        }
 
 
 

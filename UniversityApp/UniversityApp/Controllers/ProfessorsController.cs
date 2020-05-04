@@ -194,18 +194,17 @@ namespace UniversityApp.Controllers
 
         public async Task<IActionResult> GetProfessorById(int? id, int? courseId)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
             //var professor = await _context.Professor
             //   .Include(p => p.FirstProfCourses)
             //   .Include(p => p.SecondProfCourses)
             //   .FirstOrDefaultAsync(m => m.Id == id);
 
-            var viewModel = new ProfessorCoursesView();
-            viewModel.Professors = await _context.Professor
+            var professor =  await _context.Professor
                 .Include(p => p.FirstProfCourses)
                     .ThenInclude(p => p.Students)
                         .ThenInclude(p => p.Student)
@@ -213,27 +212,27 @@ namespace UniversityApp.Controllers
                     .ThenInclude(p => p.Students)
                         .ThenInclude(p => p.Student)
                 .AsNoTracking()
-                .ToListAsync();
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (id != null)
-            {
-                ViewData["InstructorID"] = id.Value;
-                Professor professor = viewModel.Professors.Where(
-                    i => i.Id == id.Value).Single();
-                viewModel.FirstProfCourses = professor.FirstProfCourses;
-                viewModel.SecondProfCourses = professor.SecondProfCourses;
+            //if (id != null)
+            //{
+            //    ViewData["ProfessorId"] = id.Value;
+            //    Professor professor = viewModel.Professors.Where(
+            //        i => i.Id == id.Value).Single();
+            //    viewModel.FirstProfCourses = professor.FirstProfCourses;
+            //    viewModel.SecondProfCourses = professor.SecondProfCourses;
 
-            }
+            //}
 
-            if (courseId != null)
-            {
-                ViewData["CourseID"] = courseId.Value;
-                viewModel.Enrollments = viewModel.FirstProfCourses.Where(
-                    x => x.Id == courseId).Single().Students;
-                viewModel.Enrollments = viewModel.SecondProfCourses.Where(
-                   x => x.Id == courseId).Single().Students;
-            }
-            return View(viewModel);
+            //if (courseId != null)
+            //{
+            //    ViewData["Id"] = courseId.Value;
+            //    viewModel.Enrollments = viewModel.FirstProfCourses.Where(
+            //        x => x.Id == courseId).Single().Students;
+            //    viewModel.Enrollments = viewModel.SecondProfCourses.Where(
+            //       x => x.Id == courseId).Single().Students;
+            //}
+            return View(professor);
         }
     }
 }

@@ -1,0 +1,121 @@
+﻿@model UniversityApp.Models.Course
+@{
+    ViewData["Title"] = "GetCourseById";
+}
+
+
+
+<h2>Course @Html.DisplayFor(item => item.Title)</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Year
+            </th>
+            <th>
+                Semester
+            </th>
+        </tr>
+        
+    </thead>
+    <tbody>
+        <tr>
+            @if (Model.Semester != 0)
+            {
+                <td>
+                    Not Specified
+                </td>
+                <td>
+                  @Model.Semester
+                </td>
+            }
+        </tr>
+       
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Professors Teaching <br /> on this course
+            </th>
+            <th>
+                Degree
+            </th>
+            <th>
+                Academic Rank
+            </th>
+            
+        </tr>
+       
+    </thead>
+    <tbody>
+        <tr>
+            @if (Model.FirstProfessor != null)
+            {
+                <td>
+                    <a asp-controller="Professors" asp-action="Details" asp-route-id="@Model.FirstProfessor.Id"> @Model.FirstProfessor.FullName</a>
+                </td>
+                <td>
+                    @Model.FirstProfessor.Degree
+                </td>
+                <td>
+                    @Model.FirstProfessor.AcademicRank
+                </td>
+            }
+        </tr>
+        <tr>
+            @if (Model.SecondProfessor != null)
+            {
+                <td>
+                    <a asp-controller="Professors" asp-action="Details" asp-route-id="@Model.SecondProfessor.Id"> @Model.SecondProfessor.FullName</a>
+                </td>
+                <td>
+                    @Model.SecondProfessor.Degree
+                </td>
+                <td>
+                    @Model.SecondProfessor.AcademicRank
+                </td>
+            }
+        </tr>
+
+    </tbody>
+</table>
+@*<table>
+    <thead>
+        <tr>
+            <th>
+                Student's Name
+            </th>
+            <th>
+                Grade
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Students != null)
+        {
+            @foreach (var student in Model.Students)
+
+            {
+                @if (student != null)
+                {
+                    <tr>
+                        <td>
+                            @student.Student.FullName
+                        </td>
+                        <td>
+                            @student.Grade
+                        </td>
+                    </tr>
+                }
+
+            }
+
+        }
+    </tbody>
+</table>*@
+

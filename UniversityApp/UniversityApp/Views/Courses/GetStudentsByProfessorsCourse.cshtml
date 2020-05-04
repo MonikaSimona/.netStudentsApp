@@ -1,0 +1,96 @@
+﻿@model UniversityApp.Models.Course
+@{
+    ViewData["Title"] = "GetStudentsByProfessorsCourse";
+}
+
+<h2>Students on this course</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Index
+            </th>
+            <th>
+                Total Points
+            </th>
+            <th>
+                Seminar URl
+            </th>
+
+            <th>
+                Grade
+            </th>
+            <th>
+                Enrollment Date
+            </th>
+            
+            <th>Finish Date</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        
+
+       @foreach (var student in Model.Students)
+        {
+        <tr>
+
+            @if (student.Student.FullName != null)
+            {
+                <td>
+                    @student.Student.FullName
+                </td>
+            }
+
+            <td>
+                @student.Student.StudentId
+            </td>
+            <td>
+                @student.ExamPoints + @student.ProjectPoints + @student.SeminarPoints + @student.AdditionalPoint
+
+            </td>
+            <td>
+                @student.SeminarUrl
+            </td>
+            <td>
+                @student.Grade
+            </td>
+            <td>
+                @student.Student.EnrollmentDate
+            </td>
+            <td>
+                @if(student.FinishDate != null)
+                {
+                    @student.FinishDate
+                }
+                else
+                {
+                    <p>Enrolled</p>
+                }
+
+            </td>
+            <td>
+                @if (student.FinishDate == null)
+                {
+                    <a  asp-controller="Enrollments" asp-action="ProfessorStudentChange" asp-route-id="@student.Id">Change</a>
+                }
+                else
+                {
+                    <p>Finished</p>
+                }
+
+            </td>
+        
+
+        </tr>
+        }
+        
+    </tbody>
+</table>
+

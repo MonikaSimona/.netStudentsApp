@@ -19,6 +19,56 @@ namespace UniversityApp.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> ProfessorStudentChange(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var enrollment = await _context.Enrollment
+                .Include(e => e.Course)
+                .Include(e => e.Student)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if (enrollment == null)
+            {
+                return NotFound();
+            }
+            return View(enrollment);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProfessorStudentChange(int id)
+        {
+
+            if (id.Equals(null))
+            {
+                return NotFound();
+            }
+
+            var enrollmentToUpdate = await _context.Enrollment.FirstOrDefaultAsync(s => s.Id == id);
+            if (await TryUpdateModelAsync<Enrollment>(
+                enrollmentToUpdate,
+                "", s => s.ExamPoints, s => s.SeminarPoints, s => s.ProjectPoints, s => s.AdditionalPoint,
+                s => s.Grade, s => s.FinishDate))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(enrollmentToUpdate);
+
+        }
+
         // GET: Enrollments
         public async Task<IActionResult> Index()
         {

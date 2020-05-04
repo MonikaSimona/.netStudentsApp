@@ -41,7 +41,8 @@ namespace UniversityApp.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime FinishDate { get; set; }
+        
+        public DateTime? FinishDate { get; set; }
 
 
     }
