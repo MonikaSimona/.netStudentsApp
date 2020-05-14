@@ -1,22 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using UniversityApp.Data;
 using UniversityApp.Models;
+using UniversityApp.ViewModels;
 
 namespace UniversityApp.Controllers
 {
     public class EnrollmentsController : Controller
     {
         private readonly UniversityAppContext _context;
+        private IWebHostEnvironment webHostEnviroment;
 
-        public EnrollmentsController(UniversityAppContext context)
+        public EnrollmentsController(UniversityAppContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            webHostEnviroment = hostEnvironment;
+            
         }
 
         public async Task<IActionResult> ProfessorStudentChange(int? id)
@@ -68,6 +76,172 @@ namespace UniversityApp.Controllers
             return View(enrollmentToUpdate);
 
         }
+        public async Task<IActionResult> GetStudentsByProfessorsCourse(int? Id, int? year=0)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+            var enrollment = _context.Enrollment.Where(e => e.CourseId == Id);
+            enrollment = enrollment.Include(e => e.Student);
+            if(year != 0) 
+            {
+                enrollment = enrollment.Where(e => e.Year == year);
+            }
+
+
+            return View(enrollment);
+        }
+
+        private string AddFile(IFormFile file)
+        {
+            string uniqueFileName = null;
+
+            if (file != null)
+            {
+                string folderUpload = Path.Combine(webHostEnviroment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                string filePath = Path.Combine(folderUpload, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
+        public async Task<IActionResult> GetStudentByEnrollmentId(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var enrollment = await _context.Enrollment
+                .Include(e => e.Course)
+                .Include(e => e.Student)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if(enrollment == null)
+            {
+                return NotFound();
+            }
+            return View(enrollment);
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetStudentByEnrollmentId(int? id, IFormFile seminarFile )
+        {
+            if(id.Equals(null))
+            {
+                return NotFound();
+            }
+
+            int studentId = 1;
+            string student = null;
+            if (TempData["selectedStudent"] != null)
+            {
+                student = TempData["selectedStudent"].ToString();
+                studentId = Int32.Parse(student);
+            }
+
+            var enrollment = await _context.Enrollment.FirstOrDefaultAsync(e => e.Id == id);
+            enrollment.SeminarUrl = AddFile(seminarFile);
+            await TryUpdateModelAsync<Enrollment>(
+                enrollment, "", e => e.ProjectUrl);
+            
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("GetCoursesByStudent", "Enrollments",new { id = studentId});
+                }
+                catch(DbUpdateException /* ex */)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
+                }
+            
+            return View(enrollment);
+        }
+
+        public async Task<IActionResult> GetCoursesByStudent(int? id)
+        {
+            if (id.Equals(null))
+            {
+                return NotFound();
+            }
+            var students = _context.Enrollment.Where(e => e.StudentId == id);
+            students = students.Include(s => s.Course);
+
+            //var student = await _context.Enrollment
+            //    .Include(e => e.Student)
+            //    .ThenInclude(e => e.Courses)
+            //    .FirstOrDefaultAsync(e => e.Student.Id == id);
+
+            return View(students);
+        }
+
+        public async Task<IActionResult> Enroll(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = _context.Courses.Where(m => m.Id == id)
+               .Include(m => m.Students).First();
+            if (course == null)
+            {
+                return NotFound();
+            }
+            var EnrollmentEditVM = new EnrollmentViewModel
+            {
+                Course = course,
+                SelectedStudents = course.Students.Select(m => m.StudentId),
+                StudentList = new MultiSelectList(_context.Student, "Id", "FullName")
+            };
+            return View(EnrollmentEditVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Enroll(int id, int year, string semester, EnrollmentViewModel viewModel)
+        {
+           
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    IEnumerable<int> listStudents = viewModel.SelectedStudents;
+                    IQueryable<Enrollment> toBeRemoved = _context.Enrollment.Where(s => !listStudents.Contains(s.StudentId) && s.CourseId == id);
+                    _context.Enrollment.RemoveRange(toBeRemoved);
+                    IEnumerable<int> existStudents = _context.Enrollment.Where(s => listStudents.Contains(s.StudentId) && s.CourseId == id).Select(s => s.StudentId);
+                    IEnumerable<int> newStudents = listStudents.Where(s => !existStudents.Contains(s));
+
+                    foreach (int studentId in newStudents)
+                        _context.Enrollment.Add(new Enrollment
+                        {
+                            StudentId = studentId,
+                            CourseId = id,
+                            Semester = semester,
+                            Year = year
+                        });
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                   
+                    throw;
+                    
+                }
+                return RedirectToAction(nameof(CoursesController.Index));
+            }
+            return View(viewModel);
+        }
+
+
+
+
 
         // GET: Enrollments
         public async Task<IActionResult> Index()
@@ -83,6 +257,11 @@ namespace UniversityApp.Controllers
             {
                 return NotFound();
             }
+            string student = null;
+            if (TempData["selectedCourse"] != null)
+                student = TempData["selectedCourse"].ToString();
+            TempData.Keep();
+            ViewData["selectedCrs"] = student;
 
             var enrollment = await _context.Enrollment
                 .Include(e => e.Course)

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using UniversityApp.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace UniversityApp
 {
@@ -28,6 +29,16 @@ namespace UniversityApp
             services.AddControllersWithViews();
             services.AddDbContext<UniversityAppContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UniversityAppContext")));
+
+            services.AddCors();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            .AddJsonOptions(x =>
+            {
+                //x.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+                //x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                //x.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+            });
+
 
         }
 
@@ -50,6 +61,12 @@ namespace UniversityApp
             app.UseRouting();
 
             app.UseAuthorization();
+            //app.UseCors(builder => builder
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //    .AllowCredentials());
+
 
             app.UseEndpoints(endpoints =>
             {

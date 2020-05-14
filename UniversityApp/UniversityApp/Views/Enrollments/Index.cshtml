@@ -58,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.Course.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.FirstName)
+                <a asp-controller="Enrollments" asp-action="GetStudentByEnrollmentId" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Student.FullName)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Semester)

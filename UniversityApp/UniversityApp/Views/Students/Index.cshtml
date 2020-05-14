@@ -26,6 +26,7 @@
                 @Html.DisplayNameFor(model => model.StudentId)
             </th>
             <th>
+                
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
             <th>
@@ -53,7 +54,10 @@
                 @Html.DisplayFor(modelItem => item.StudentId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                <a asp-controller="Enrollments" asp-action="GetCoursesByStudent" asp-route-id="@item.Id">
+                @Html.DisplayFor(modelItem => item.FirstName)</a>
+               
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)

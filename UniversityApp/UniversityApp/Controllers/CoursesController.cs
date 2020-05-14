@@ -226,19 +226,7 @@ namespace UniversityApp.Controllers
             return View(course);
 
         }
-        public async Task<IActionResult> GetStudentsByProfessorsCourse(int? Id)
-        {
-            if(Id == null)
-            {
-                return NotFound();
-            }
-            var course = await _context.Courses
-                .Include(c => c.Students)
-                .ThenInclude(c => c.Student)
-                .FirstOrDefaultAsync(c => c.Id == Id);
-
-            return View(course);
-        }
+       
      
     }
 }

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<UniversityApp.Models.Enrollment>
+@{
+    ViewData["Title"] = "GetCoursesByStudent";
+}
+
+<h3>Courses from this student</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Points
+            </th>
+            <th>
+                Grade
+            </th>
+            <th>
+                Project Url
+            </th>
+            <th>
+                Seminar Url
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var course in Model)
+            {
+                <tr>
+                    <td>
+                        @course.Course.Id
+                    </td>
+                    <td>
+                        @course.Course.Title
+                    </td>
+                    <td>
+                        @course.ExamPoints + @course.ProjectPoints + @course.SeminarPoints + @course.AdditionalPoint
+                    </td>
+                    <td>
+                        @course.Grade
+                    </td>
+                    <td>
+                        @course.ProjectUrl
+                    </td>
+                    <td>
+                        @course.SeminarUrl
+                    </td>
+                    <td>
+                        <a asp-controller="Enrollments" asp-action="GetStudentByEnrollmentId" asp-route-id="@course.Id">Change</a>
+                    </td>
+
+                </tr>
+            }
+        }
+
+
+    </tbody>
+</table>
+
+

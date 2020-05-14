@@ -1,9 +1,15 @@
-﻿@model UniversityApp.Models.Course
+﻿@model IEnumerable<UniversityApp.Models.Enrollment>
 @{
     ViewData["Title"] = "GetStudentsByProfessorsCourse";
 }
 
 <h2>Students on this course</h2>
+
+
+
+<form asp-controller="Enrollments" asp-action="GetStudentsByProfessorsCourse">
+   Choose Year: <input type="text" name="year" />
+</form>
 
 
 <table class="table">
@@ -16,10 +22,16 @@
                 Index
             </th>
             <th>
+                Year
+            </th>
+            <th>
                 Total Points
             </th>
             <th>
-                Seminar URl
+                Seminar Url
+            </th>
+            <th>
+                Project Url
             </th>
 
             <th>
@@ -37,7 +49,7 @@
     <tbody>
         
 
-       @foreach (var student in Model.Students)
+       @foreach (var student in Model)
         {
         <tr>
 
@@ -52,11 +64,17 @@
                 @student.Student.StudentId
             </td>
             <td>
+                @student.Year
+            </td>
+            <td>
                 @student.ExamPoints + @student.ProjectPoints + @student.SeminarPoints + @student.AdditionalPoint
 
             </td>
             <td>
                 @student.SeminarUrl
+            </td>
+            <td>
+                @student.ProjectUrl
             </td>
             <td>
                 @student.Grade
@@ -78,7 +96,7 @@
             <td>
                 @if (student.FinishDate == null)
                 {
-                    <a  asp-controller="Enrollments" asp-action="ProfessorStudentChange" asp-route-id="@student.Id">Change</a>
+                    <a  asp-controller="Enrollments" asp-action="ProfessorStudentChange" asp-route-id="@student.Id">Make Changes</a>
                 }
                 else
                 {

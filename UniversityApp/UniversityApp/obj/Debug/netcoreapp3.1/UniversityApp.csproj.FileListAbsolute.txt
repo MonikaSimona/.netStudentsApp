@@ -182,5 +182,8 @@ C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\Univer
 C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\UniversityApp.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Professors\GetProfessorById.cshtml.g.cs
 C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Courses\GetCourseById.cshtml.g.cs
-C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Courses\GetStudentsByProfessorsCourse.cshtml.g.cs
 C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\ProfessorStudentChange.cshtml.g.cs
+C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\GetStudentsByProfessorsCourse.cshtml.g.cs
+C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\GetStudentByEnrollmentId.cshtml.g.cs
+C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\GetCoursesByStudent.cshtml.g.cs
+C:\Users\Simona\Desktop\FEIT\6semestar\ServerskiWeb(.NET)\.netStudentsApp\UniversityApp\UniversityApp\obj\Debug\netcoreapp3.1\Razor\Views\Enrollments\Enroll.cshtml.g.cs
